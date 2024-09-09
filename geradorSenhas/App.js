@@ -1,48 +1,42 @@
-
-import { useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Modal } from 'react-native';
-import { ModalPassword } from './src/components/modal/index.js';
+import { useState } from 'react';
+import { ModalPassword } from './src/components/modal';
 
+ 
 let charset = "abcdefghijklmnopqrstuvwxyz!#$&%0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
+ 
 export default function App() {
   const [senhaGerada, setSenhaGerada] = useState("")
   const [modalVisible, setModalVisible] = useState(false)
-
-  function gerarSenha(){
+ 
+  function gerarSenha() {
     let senha = "";
-    
-    for(let i = 0, n = charset.length; i < 10; i++) {
+ 
+    for (let i = 0, n = charset.length; i < 10; i++) {
       senha += charset.charAt(Math.floor(Math.random() * n))
     }
-
-    setSenhaGerada(senha);
-    setModalVisible(true);
+    setSenhaGerada(senha)
+    setModalVisible(true)
+ 
   }
-
+ 
   return (
     <View style={styles.container}>
       <Image
         source={require("./src/img/logolock.png")}
         style={styles.logo}
       />
-      
-      <Text style={styles.title}>
-          LockGen
-      </Text>
-
-      <TouchableOpacity onPress={gerarSenha} style={styles.button}>
-        <Text style={styles.buttonText}>Gerar Senha</Text>
+      <Text style={styles.title}>LockGen</Text>
+      <TouchableOpacity style={styles.button} onPress={gerarSenha}>
+        <Text style={styles.textButton}>Gerar Senha</Text>
       </TouchableOpacity>
-
-      <Modal visible={modalVisible} animationType='fade' transparent={true} >
-      <ModalPassword />
+      <Modal visible={modalVisible} animationType='fade' transparent={true}>
+        <ModalPassword senha={senhaGerada} fecharModal={() => setModalVisible(false)}/>
       </Modal>
-      <Text style={styles.genText}>Senha: {senhaGerada}</Text>
     </View>
   );
 }
-
+ 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -50,32 +44,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  logo:{
+  logo: {
     marginBottom: 20,
   },
-  title:{
+  title: {
     fontSize: 28,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
+ 
   },
   button: {
-    backgroundColor: '#333',
+    backgroundColor: "#333",
     width: '70%',
-    borderRadius: 12,
     height: 50,
-    alignItems: 'center',
-    justifyContent: 'center'
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20
   },
-  buttonText: {
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: 'bold',
+  textButton: {
+    color: "#FFF",
+    fontWeight: "bold",
+    fontSize: 18,
+ 
   },
   genText: {
-    textAlign: 'center',
-    fontSize: 20,
-    marginTop: 10,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
   }
-  
 });
+ 
