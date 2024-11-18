@@ -1,14 +1,21 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, Modal } from 'react-native';
 import { useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator} from '@react-navigation/stack';
+
+import SavedPassword from '.src/screens/SavedPassword';
 import { ModalPassword } from './src/components/modal';
 
  
 let charset = "abcdefghijklmnopqrstuvwxyz!#$&%0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
  
-export default function App() {
-  const [senhaGerada, setSenhaGerada] = useState("")
-  const [modalVisible, setModalVisible] = useState(false)
- 
+const Stack = createStackNavigator();
+
+function HomeScreen({ navigation }) {
+  const [ senhaGerada, setSenhaGerada] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [ SavedPassword, setSavedPassword] = useState([]); 
+
   function gerarSenha() {
     let senha = "";
  
@@ -18,6 +25,16 @@ export default function App() {
     setSenhaGerada(senha)
     setModalVisible(true)
  
+  }
+}
+
+  function salvarSenha() {
+    setSavedPassword(prevPassword => {
+      const updatePassword = [...prevPassword, senhaGerada];
+      setModalVisible(false);
+      navigation.navigate('SavedPassword', { savedPassword: updatePassword});
+      return updatePassword; 
+    })
   }
  
   return (
@@ -31,11 +48,21 @@ export default function App() {
         <Text style={styles.textButton}>Gerar Senha</Text>
       </TouchableOpacity>
       <Modal visible={modalVisible} animationType='fade' transparent={true}>
-        <ModalPassword senha={senhaGerada} fecharModal={() => setModalVisible(false)}/>
+        <ModalPassword senha={senhaGerada} fecharModal={() => setModalVisible(false)} salvarSenha={salvarSenha} />
       </Modal>
     </View>
   );
-}
+
+  export default function App() {
+    return (
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="SavedPassword" component={SavedPassword} />
+          </Stack.Navigator>
+          </NavigationContainer>
+    );
+  }
  
 const styles = StyleSheet.create({
   container: {
