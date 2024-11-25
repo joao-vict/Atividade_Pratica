@@ -5,6 +5,7 @@ import { createStackNavigator} from '@react-navigation/stack';
 
 import SavedPassword from '.src/screens/SavedPassword';
 import { ModalPassword } from './src/components/modal';
+import { ModalPassword } from './src/newfolder/segura';
 
  
 let charset = "abcdefghijklmnopqrstuvwxyz!#$&%0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -34,22 +35,27 @@ function HomeScreen({ navigation }) {
       setModalVisible(false);
       navigation.navigate('SavedPassword', { savedPassword: updatePassword});
       return updatePassword; 
-    })
+    });
   }
  
   return (
     <View style={styles.container}>
       <Image
-        source={require("./src/img/logolock.png")}
+        source={require("./src/img/logo.png")}
         style={styles.logo}
       />
-      <Text style={styles.title}>LockGen</Text>
+      <Text style={styles.title}>Senha Segura</Text>
       <TouchableOpacity style={styles.button} onPress={gerarSenha}>
         <Text style={styles.textButton}>Gerar Senha</Text>
       </TouchableOpacity>
       <Modal visible={modalVisible} animationType='fade' transparent={true}>
-        <ModalPassword senha={senhaGerada} fecharModal={() => setModalVisible(false)} salvarSenha={salvarSenha} />
+        <ModalPassword senha={senhaGerada} handleClose={() => setModalVisible(false)} salvarSenha={salvarSenha} />
       </Modal>
+      <TouchableOpacity style={styles.button} onPress={segura}>
+        <Text style={styles.textButton}>O que é uma senha segura?</Text>
+      </TouchableOpacity>
+
+      <Text style={styles.senha}>{senhaGerada}</Text>
     </View>
   );
 
@@ -73,6 +79,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     marginBottom: 20,
+    height: 50,
+    width: 120,
   },
   title: {
     fontSize: 28,
@@ -81,24 +89,23 @@ const styles = StyleSheet.create({
  
   },
   button: {
-    backgroundColor: "#333",
+    backgroundColor: "#008000",
     width: '70%',
     height: 50,
-    borderRadius: 8,
+    borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 20
   },
   textButton: {
-    color: "#FFF",
+    color: "#008000",
     fontWeight: "bold",
     fontSize: 18,
- 
   },
   genText: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#333",
+    color: "#",
   }
 });
- 
+  
